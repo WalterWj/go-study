@@ -11,4 +11,5 @@ func main() {
 	reg :=regexp.MustCompile("^alter\\s+table")
 	data := reg.Find([]byte(str))
 	fmt.Println(string(data))
+	fmt.Println("Hello, World!")
 }
