@@ -14,3 +14,4 @@ go install src/test.go
 
 export GOPATH="$OLD_GO_PATH"
 export GOBIN="$OLD_GO_BIN"
+
