@@ -3,3 +3,16 @@
 .idea/modules.xml
 .idea/vcs.xml
 .idea/workspace.xml
+
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# go
+
+# dir
+./bin
+.idea/
+../.idea/
