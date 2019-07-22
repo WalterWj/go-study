@@ -7,10 +7,10 @@ OLD_GO_BIN="$GOBIN"
 export GOPATH="$CURRENT_DIR" 
 export GOBIN="$CURRENT_DIR/bin"
 
-#指定并整理当前的源码路径
+# Specifies and organizes the current source path
 gofmt -w src
 
-go install src/test.go
+go install src/$1
 
 export GOPATH="$OLD_GO_PATH"
 export GOBIN="$OLD_GO_BIN"
