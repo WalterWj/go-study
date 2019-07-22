@@ -7,6 +7,10 @@ OLD_GO_BIN="$GOBIN"
 export GOPATH="$CURRENT_DIR" 
 export GOBIN="$CURRENT_DIR/bin"
 
+SET CGO_ENABLE=0
+SET GOOS=linux
+SET GOARCH=amd64
+
 # Specifies and organizes the current source path
 gofmt -w src
 
