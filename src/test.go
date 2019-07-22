@@ -1,18 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type cb func(int) int
 
 func main() {
-	a, b := 100, 200
-	fmt.Printf("Begin A and B is: %d and %d \n", a, b)
-
-	swap(&a, &b)
-	fmt.Printf("Change A and B is: %d and %d \n", a, b)
+	testCallBack(3, CallBack)
+	testCallBack(2, func(x int) int {
+		fmt.Printf("我是回调，x：%d\n", x)
+		return x
+	})
 }
 
-func swap(x *int, y *int) {
-	var temp int
-	temp = *x
-	*x = *y
-	*y = temp
+func testCallBack(x int, f cb) {
+	x += 2
+	f(x)
+}
+
+func CallBack(x int) int {
+	fmt.Printf("Call back is %d \n", x)
+	return x
 }

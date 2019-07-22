@@ -13,6 +13,6 @@ Desktop.ini
 # go
 
 # dir
-bin/
+/bin
 .idea/
 ../.idea/
