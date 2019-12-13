@@ -5,9 +5,10 @@ OLD_GO_PATH="$GOPATH"
 OLD_GO_BIN="$GOBIN"
 OLD_GO_ROOT="$GOROOT"
 
-export GOPATH="$CURRENT_DIR" 
+# export GOPATH="$CURRENT_DIR"
+export GOPATH="/Users/wangjun/go" 
 export GOBIN="$CURRENT_DIR/bin"
-# export GOROOT="$CURRENT_DIR/src"
+# export GOROOT="/Users/wangjun/go"
 
 # export http_proxy='http://localhost:1087'
 # export https_proxy='http://localhost:1087'
