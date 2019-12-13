@@ -4,12 +4,12 @@ import (
 	"flag"
 	"fmt"
 
-	math "github.com/WalterWJ/go-study/pkg/myMath/myMath"
+	myMath "github.com/WalterWJ/go-study/pkg/myMath"
 )
 
 func main() {
 	num := flag.Int("n", 10, "number")
 	flag.Parse()
 	fmt.Println(*num)
-	a = math.Add(1, 2)
+	a = myMath.Add(1, 2)
 }

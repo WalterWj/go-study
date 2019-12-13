@@ -1,6 +1,6 @@
 // myMath.go
 
-package mathClass
+package myMath
 
 import "fmt"
 
