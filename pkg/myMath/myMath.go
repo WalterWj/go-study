@@ -5,8 +5,8 @@ package myMath
 import "fmt"
 
 func Add(x, y int) int {
-	return x + y
 	fmt.Println(x + y)
+	return x + y
 }
 
 func Sub(x, y int) int {
