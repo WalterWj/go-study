@@ -1,25 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+
+	math "github.com/WalterWJ/go-study/pkg/myMath/myMath"
 )
 
-type cb func(int) int
-
 func main() {
-	testCallBack(3, CallBack)
-	testCallBack(2, func(x int) int {
-		fmt.Printf("我是回调，x：%d\n", x)
-		return x
-	})
-}
-
-func testCallBack(x int, f cb) {
-	x += 2
-	f(x)
-}
-
-func CallBack(x int) int {
-	fmt.Printf("Call back is %d \n", x)
-	return x
+	num := flag.Int("n", 10, "number")
+	flag.Parse()
+	fmt.Println(*num)
+	a = math.Add(1, 2)
 }
