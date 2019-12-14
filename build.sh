@@ -8,7 +8,7 @@ OLD_GO_ROOT="$GOROOT"
 # export GOPATH="$CURRENT_DIR"
 export GOPATH="/Users/wangjun/go" 
 export GOBIN="$CURRENT_DIR/bin"
-# export GOROOT="/Users/wangjun/go"
+# export GOROOT="CURRENT_DIR/pkg"
 
 # export http_proxy='http://localhost:1087'
 # export https_proxy='http://localhost:1087'

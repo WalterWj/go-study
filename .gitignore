@@ -16,6 +16,7 @@ Desktop.ini
 /bin
 .idea/
 ../.idea/
+./test
 
 # file
 test.txt
