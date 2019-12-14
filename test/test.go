@@ -26,6 +26,7 @@ func init() {
 	flag.Parse()
 	dataSourceName = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8", *dbusername, *dbpassword, *dbhost, *dbport, *dbname)
 }
+
 func main() {
 	// parser flag
 	flag.Parse()
