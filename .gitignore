@@ -11,12 +11,13 @@ ehthumbs.db
 Desktop.ini
 
 # go
+/test/test.go
 
 # dir
 /bin
 .idea/
 ../.idea/
-./test/
+/test
 
 # file
 test.txt
