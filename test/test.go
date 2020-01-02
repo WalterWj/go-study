@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"encoding/csv"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"path"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -16,6 +18,7 @@ var (
 	dbusername     = flag.String("u", "root", "DB User")
 	dbpassword     = flag.String("p", "", "Password")
 	dbport         = flag.Int("P", 4000, "DB Port")
+	dbstatus       = flag.Int("s", 10080, "DB Status Port")
 	dbname         = flag.String("d", "test", "DB name")
 	tbname         = flag.String("t", "test", "Table name")
 	driver         = "mysql"
@@ -34,53 +37,114 @@ func main() {
 
 	db := getdb()
 
-	rows, err := db.Query(fmt.Sprintf("SELECT * from %s", *tbname))
+	// rows, err := db.Query(fmt.Sprintf("show create table %s", *tbname))
+	rows, err := db.Query("show tables")
 
 	if err != nil {
 		fmt.Println("Select err: ", err.Error())
 	}
+	defer rows.Close()
 
-	columns, err := rows.Columns()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	//values：一行的所有值,把每一行的各个字段放到values中，values长度==列数
-	values := make([]sql.RawBytes, len(columns))
-	// print(len(values))
-
-	scanArgs := make([]interface{}, len(values))
-	for i := range values {
-		scanArgs[i] = &values[i]
-	}
-
-	//存所有行的内容totalValues
-	totalValues := make([][]string, 0)
-	defer db.Close()
 	for rows.Next() {
-
-		//存每一行的内容
-		var s []string
-
-		//把每行的内容添加到scanArgs，也添加到了values
-		err = rows.Scan(scanArgs...)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		for _, v := range values {
-			s = append(s, string(v))
-			// print(len(s))
-		}
-		totalValues = append(totalValues, s)
+		var content string
+		rows.Scan(&content)
+		// println(content)
+		// parserTable(content)
 	}
+	// parserTable("test")
+	// writeFile("tmp", "test.txt", "test", "nomal")
+	// writeFile("tmp", "test.txt", "注释", "")
+	// parserVersion()
+	tmp := parserState(*dbname, *tbname, *dbhost, *dbstatus)
+	println(tmp)
 	costGetTime := time.Since(start)
 	fmt.Printf("get values time is %s \n", costGetTime)
+}
 
-	// writeToCSV(*tbname+".csv", columns, totalValues)
+func parserState(dbname string, tbname string, dbhost string, dbstatus int) string {
+	var pdURL string
+	pdURL = fmt.Sprintf("http://%s:%d/stats/dump/%s/%s", dbhost, dbstatus, dbname, tbname)
+	ret, err := http.Get(pdURL)
+	if err != nil {
+		panic(err)
+	}
+	defer ret.Body.Close()
 
-	costTotal := time.Since(start)
-	fmt.Printf("write csv cost time is %s", costTotal-costGetTime)
+	body, err := ioutil.ReadAll(ret.Body)
+	if err != nil {
+		panic(err)
+	}
+	// fmt.Println(reflect.TypeOf(body))
+	return string(body)
+}
+
+func writeFile(dirname string, fileName string, content string, mode string) {
+	_, err := os.Stat(dirname)
+	if err != nil {
+		fmt.Printf("dir %s is not exist\n", dirname)
+		// mkdir dir
+		err := os.Mkdir(dirname, os.ModePerm)
+		if err != nil {
+			fmt.Printf("mkdir failed![%v]\n", err)
+		} else {
+			fmt.Printf("mkdir %s success!\n", dirname)
+		}
+	}
+
+	f, err := os.OpenFile(path.Join(dirname, fileName), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
+	if err != nil {
+		fmt.Println("os OpenFile error: ", err)
+		return
+	}
+	defer f.Close()
+	if mode == "nomal" {
+		f.WriteString(content + "\n")
+	} else {
+		content = "/* " + content + "*/"
+		f.WriteString(content + "\n")
+	}
+}
+
+// create table
+func parserTable(tableName string) string {
+	// parser flag
+	flag.Parse()
+
+	db := getdb()
+	rows, err := db.Query(fmt.Sprintf("show create table %s", tableName))
+	if err != nil {
+		fmt.Println("Select err: ", err.Error())
+	}
+	defer rows.Close()
+
+	var _table, content string
+	for rows.Next() {
+		rows.Scan(&_table, &content)
+		// println(_table, content)
+	}
+
+	return content
+}
+
+// get version
+func parserVersion() string {
+	// parser flag
+	flag.Parse()
+
+	db := getdb()
+	rows, err := db.Query("select tidb_version()")
+	if err != nil {
+		fmt.Println("Get TiDB version err: ", err.Error())
+	}
+	defer rows.Close()
+
+	var content string
+	for rows.Next() {
+		rows.Scan(&content)
+		// println(content)
+	}
+
+	return content
 }
 
 // connect DB
@@ -93,27 +157,4 @@ func getdb() *sql.DB {
 	}
 
 	return db
-}
-
-//writeToCSV
-func writeToCSV(file string, columns []string, totalValues [][]string) {
-	f, err := os.Create(file)
-
-	defer f.Close()
-	if err != nil {
-		panic(err)
-	}
-
-	w := csv.NewWriter(f)
-	for i, row := range totalValues {
-		// 第一次写列名+第一行数据
-		if i == 0 {
-			w.Write(columns)
-			w.Write(row)
-		} else {
-			w.Write(row)
-		}
-	}
-	w.Flush()
-	fmt.Println("处理完毕：", file)
 }
