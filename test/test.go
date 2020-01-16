@@ -8,21 +8,26 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
-	dbhost         = flag.String("h", "127.0.0.1", "IP for DB")
-	dbusername     = flag.String("u", "root", "DB User")
-	dbpassword     = flag.String("p", "", "Password")
-	dbport         = flag.Int("P", 4000, "DB Port")
-	dbstatus       = flag.Int("s", 10080, "DB Status Port")
-	dbname         = flag.String("d", "test", "DB name")
-	tbname         = flag.String("t", "test", "Table name")
+	dbhost     = flag.String("h", "127.0.0.1", "IP for DB")
+	dbusername = flag.String("u", "root", "DB User")
+	dbpassword = flag.String("p", "", "Password")
+	dbport     = flag.Int("P", 4000, "DB Port")
+	dbstatus   = flag.Int("s", 10080, "DB Status Port")
+	dbname     = flag.String("d", "test", "DB name")
+	tbname     = flag.String("t", "test", "Table name")
+)
+
+var (
 	driver         = "mysql"
 	dataSourceName = ""
+	dirname        = time.Now().Unix()
 )
 
 func init() {
@@ -48,22 +53,31 @@ func main() {
 	for rows.Next() {
 		var content string
 		rows.Scan(&content)
-		// println(content)
-		// parserTable(content)
+
 	}
-	// parserTable("test")
-	// writeFile("tmp", "test.txt", "test", "nomal")
-	// writeFile("tmp", "test.txt", "注释", "")
-	// parserVersion()
-	tmp := parserState(*dbname, *tbname, *dbhost, *dbstatus)
-	println(tmp)
+
+	parserVersion()
+	parserTable(*tbname)
+	parserState(*dbname, *tbname)
+
+	// if *tbname != "test" {
+	// 	println("1")
+	// } else {
+	// 	println("2")
+	// }
 	costGetTime := time.Since(start)
-	fmt.Printf("get values time is %s \n", costGetTime)
+	fmt.Printf("Cost time is %s \n", costGetTime)
+	// a := strings.Split("1;2;3;4", ";")
+	// for _, _a := range a {
+	// 	println(_a)
+	// }
+	// println(len(*dbname))
+	// println(dirname)
 }
 
-func parserState(dbname string, tbname string, dbhost string, dbstatus int) string {
+func parserState(dbname string, tbname string) string {
 	var pdURL string
-	pdURL = fmt.Sprintf("http://%s:%d/stats/dump/%s/%s", dbhost, dbstatus, dbname, tbname)
+	pdURL = fmt.Sprintf("http://%s:%d/stats/dump/%s/%s", *dbhost, *dbstatus, dbname, tbname)
 	ret, err := http.Get(pdURL)
 	if err != nil {
 		panic(err)
@@ -74,7 +88,16 @@ func parserState(dbname string, tbname string, dbhost string, dbstatus int) stri
 	if err != nil {
 		panic(err)
 	}
+	fileName := fmt.Sprintf("%s.%s.json", dbname, tbname)
 	// fmt.Println(reflect.TypeOf(body))
+	_dirname := "stats-" + strconv.FormatInt(dirname, 10) + "/stats"
+	_content := string(body)
+	writeFile(_dirname, fileName, _content, "json")
+
+	_dirname = "stats-" + strconv.FormatInt(dirname, 10)
+	_content = fmt.Sprintf("LOAD STATS 'stats/%s'", fileName)
+	writeFile(_dirname, "schema.sql", _content, "nomal")
+
 	return string(body)
 }
 
@@ -98,9 +121,11 @@ func writeFile(dirname string, fileName string, content string, mode string) {
 	}
 	defer f.Close()
 	if mode == "nomal" {
+		f.WriteString(content + ";\n")
+	} else if mode == "json" {
 		f.WriteString(content + "\n")
 	} else {
-		content = "/* " + content + "*/"
+		content = "/*\n" + content + "\n*/"
 		f.WriteString(content + "\n")
 	}
 }
@@ -122,6 +147,9 @@ func parserTable(tableName string) string {
 		rows.Scan(&_table, &content)
 		// println(_table, content)
 	}
+	_dirname := "stats-" + strconv.FormatInt(dirname, 10)
+	writeFile(_dirname, "schema.sql", tableName, "")
+	writeFile(_dirname, "schema.sql", content, "nomal")
 
 	return content
 }
@@ -143,6 +171,8 @@ func parserVersion() string {
 		rows.Scan(&content)
 		// println(content)
 	}
+	_dirname := "stats-" + strconv.FormatInt(dirname, 10)
+	writeFile(_dirname, "schema.sql", content, "")
 
 	return content
 }
