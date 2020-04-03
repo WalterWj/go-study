@@ -19,5 +19,13 @@ Desktop.ini
 ../.idea/
 /test
 
+# pkg
+!pkg/WalterWj/*
+pkg/*
+
+# src
+!src/github.com/WalterWj/*
+src/*
+
 # file
 test.txt
