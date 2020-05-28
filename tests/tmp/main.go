@@ -1,7 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"sync"
+	"sync/atomic"
+)
 
-func main()  {
-	fmt.Println("Hello World")
+var total uint64
+
+func worker(wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	var i uint64
+	for i = 0; i <= 100; i++ {
+		atomic.AddUint64(&total, i)
+	}
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go worker(&wg)
+	go worker(&wg)
+	wg.Wait()
 }

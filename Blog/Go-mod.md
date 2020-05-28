@@ -46,5 +46,7 @@ go get -u=patch github.com/go-sql-driver/mysql
 * 升降级版本
 
 ```shell
-
+运行 go get -u 将会升级到最新的次要版本或者修订版本(x.y.z, z是修订版本号， y是次要版本号)
+运行 go get -u=patch 将会升级到最新的修订版本
+运行 go get package@version 将会升级到指定的版本号version
 ```
