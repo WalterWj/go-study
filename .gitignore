@@ -32,3 +32,4 @@ src/*
 
 # file
 test.txt
+tests/test/test.code-workspace
