@@ -1,26 +1,34 @@
 package main
 
 import (
-	"sync"
-	"sync/atomic"
+	"fmt"
 )
 
-var total uint64
+type Phone interface {
+	call()
+}
 
-func worker(wg *sync.WaitGroup) {
-	defer wg.Done()
+type NokiaPhone struct {
+}
 
-	var i uint64
-	for i = 0; i <= 100; i++ {
-		atomic.AddUint64(&total, i)
-	}
+func (nokiaPhone NokiaPhone) call() {
+	fmt.Println("I am Nokia, I can call you!")
+}
+
+type IPhone struct {
+}
+
+func (iPhone IPhone) call() {
+	fmt.Println("I am iPhone, I can call you!")
 }
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(2)
+	var phone Phone
 
-	go worker(&wg)
-	go worker(&wg)
-	wg.Wait()
+	phone = new(NokiaPhone)
+	phone.call()
+
+	phone = new(IPhone)
+	phone.call()
+
 }

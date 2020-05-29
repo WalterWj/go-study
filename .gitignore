@@ -19,8 +19,8 @@ Desktop.ini
 ../.idea/
 
 # test
-!test/*.go
-test/*
+!tests/*.go
+tests/*
 
 # pkg
 !pkg/WalterWj/*

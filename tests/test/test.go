@@ -17,7 +17,7 @@ import (
 var (
 	dbhost     = flag.String("h", "127.0.0.1", "IP for DB")
 	dbusername = flag.String("u", "root", "DB User")
-	dbpassword = flag.String("p", "123", "Password")
+	dbpassword = flag.String("p", "", "Password")
 	dbport     = flag.Int("P", 4000, "DB Port")
 	dbstatus   = flag.Int("s", 10080, "DB Status Port")
 	dbname     = flag.String("d", "test", "DB name")
