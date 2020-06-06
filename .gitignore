@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .idea/go-study.iml
 .idea/misc.xml
 .idea/modules.xml
@@ -32,3 +33,40 @@ src/*
 
 # file
 test.txt
+=======
+.idea/go-study.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# go
+# /test/test.go
+
+# dir
+/bin
+.idea/
+../.idea/
+
+# test
+!tests/*.go
+tests/*
+
+# pkg
+!pkg/WalterWj/*
+pkg/*
+
+# src
+!src/github.com/WalterWj/*
+src/*
+
+# file
+test.txt
+tests/test/test.code-workspace
+>>>>>>> 507d4a60a4e9740134730f0e87b3ea21b57077bd
