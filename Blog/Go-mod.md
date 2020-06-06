@@ -1,19 +1,3 @@
-<<<<<<< HEAD
----
-title: Go modules
-time: 2020年04月21日
-auto: 王军
----
-# 使用
-
-## 创建 gomod
-
-```shell
-go mod init github.com/WalterWj/go-study
-```
-
-
-=======
 ---
 title: Go modules
 time: 2020年04月21日
@@ -66,4 +50,3 @@ go get -u=patch github.com/go-sql-driver/mysql
 运行 go get -u=patch 将会升级到最新的修订版本
 运行 go get package@version 将会升级到指定的版本号version
 ```
->>>>>>> 507d4a60a4e9740134730f0e87b3ea21b57077bd

@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-package main
-
-import "fmt"
-
-func main()  {
-	fmt.Println("Hello World")
-}
-=======
 package main
 
 import (
@@ -41,4 +32,3 @@ func main() {
 	phone.call()
 
 }
->>>>>>> 507d4a60a4e9740134730f0e87b3ea21b57077bd
