@@ -19,7 +19,7 @@ Desktop.ini
 ../.idea/
 
 # test
-!tests/*.go
+!tests/test/*.go
 tests/*
 
 # pkg
