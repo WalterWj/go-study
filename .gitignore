@@ -20,7 +20,7 @@ Desktop.ini
 
 # test
 !tests/test/*.go
-tests/*
+tests/
 
 # pkg
 !pkg/WalterWj/*
