@@ -42,4 +42,12 @@ $GOPATH/bin/cobra init --pkg-name github.com/WalterWj/go-study
 $GOPATH/bin/cobra add test
 
 # 在 cmd 目录下就有了 test.go
+# build 之后，可以 test -h 调用
+```
+
+- 创建附加命令，如 version.go (版本)
+
+```shell
+# 在 cmd 目录下创建 version.go
+
 ```

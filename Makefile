@@ -8,6 +8,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 GORUN=$(GOCMD) run
 BINARY_NAME="bin/go-study"
+MAIN_FILE := $(find . -name "main.go")
 BINARY_UNIX=$(BINARY_NAME)_unix
 
 .PHONY: cmd
@@ -15,7 +16,7 @@ BINARY_UNIX=$(BINARY_NAME)_unix
 default: run
 all: test build
 build:
-	$(GOBUILD) -o $(BINARY_NAME) -v ./main.go
+	$(GOBUILD) -o $(BINARY_NAME) -v $(MAIN_FILE)
 test:
 	$(GOTEST) -v ./...
 clean:
@@ -23,9 +24,9 @@ clean:
 	rm -f $(BINARY_NAME)
 	rm -f $(BINARY_UNIX)
 run:
-	$(GORUN) -n main.go
+	$(GORUN) -n $(MAIN_FILE)
 deps:
-	$(GOGET) github.com/Walterwj/go-web
+	$(GOGET) github.com/Walterwj/go-study
 
 # Cross compilation
 build-linux:
