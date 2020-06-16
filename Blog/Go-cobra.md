@@ -35,3 +35,11 @@ $GOPATH/bin/cobra init --pkg-name github.com/WalterWj/go-study
 
 # 这样在我的 go-study 项目中，创建了 cmd 目录(初始化会有一个 root.go)和 main.go,LICENSE 两个文件。
 ```
+
+- 创建 test.go (CLIs程序)
+
+```shell
+$GOPATH/bin/cobra add test
+
+# 在 cmd 目录下就有了 test.go
+```
