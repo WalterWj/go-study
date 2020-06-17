@@ -49,5 +49,26 @@ $GOPATH/bin/cobra add test
 
 ```shell
 # 在 cmd 目录下创建 version.go
+package cmd
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+func init() {
+	rootCmd.AddCommand(versionCmd)
+}
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Print the version number of go-study",
+	Long:  `All software has versions. This is go-study's`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("go-study Version: v1.0")
+	},
+}
+
+# 编译完成后使用即可。
 ```
