@@ -13,7 +13,7 @@ BINARY_UNIX=$(BINARY_NAME)_unix
 
 .PHONY: cmd
 
-default: run
+default: build
 all: test build
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v $(MAIN_FILE)
