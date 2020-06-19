@@ -34,4 +34,8 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// statsDumpCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	statsDumpCmd.Flags().StringVarP(&dbusername, "dbusername", "u", "root", "Database user")
+	statsDumpCmd.Flags().StringVarP(&dbhost, "dbhost", "d", "127.0.0.1", "Database host")
+	statsDumpCmd.Flags().StringVarP(&dbpassword, "dbpassword", "p", "", "Database passowrd")
+	statsDumpCmd.Flags().IntVarP(&dbport, "dbport", "P", 4000, "Database port")
 }
