@@ -17,6 +17,7 @@ Desktop.ini
 /bin
 .idea/
 ../.idea/
+vendor/
 
 # test
 !tests/test/*.go
