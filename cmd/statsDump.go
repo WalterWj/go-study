@@ -8,7 +8,6 @@ import (
 
 var (
 	dbhost, dbname, tbname, dbusername, dbpassword string
-	dbport                                         int
 )
 
 const (
@@ -39,7 +38,6 @@ func init() {
 	statsDumpCmd.Flags().StringVarP(&dbhost, "dbhost", "H", "127.0.0.1", "Database host")
 	statsDumpCmd.Flags().StringVarP(&dbpassword, "dbpassword", "p", "", "Database passowrd")
 	statsDumpCmd.Flags().IntVarP(&dbport, "dbport", "P", 4000, "Database port")
-	statsDumpCmd.Flags().StringVarP(&tbname, "tbname", "t", "test", "Table name")
 }
 
 func getTables(db *sql.DB) map[int]string {
@@ -51,6 +49,23 @@ func getTables(db *sql.DB) map[int]string {
 		var t string
 		err := rows.Scan(&t)
 		n := len(t)
+		ifErrWithLog(err)
+		r[n] = t
+	}
+	err = rows.Err()
+	ifErrWithLog(err)
+	return r
+}
+
+func getTables(db *sql.DB)  map[string]string{
+	var r = make(map[string]string)
+	rows, err := db.Query(tables_q)
+	ifErrWithLog(err)
+	defer rows.Close()
+
+	for rows.Next() {
+		var n, t string
+		err := rows.Scan(&t)
 		ifErrWithLog(err)
 		r[n] = t
 	}
