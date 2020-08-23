@@ -8,7 +8,7 @@ import (
 
 var (
 	dbhost, dbname, dbusername, dbpassword string
-	dbport int
+	dbport                                 int
 )
 
 const (
@@ -26,8 +26,17 @@ var statsDumpCmd = &cobra.Command{
 		dsn := fmt.Sprintf("%s:%s@(%s:%d)/%s", dbusername, dbpassword, dbhost, dbport, dbname)
 		db := mysqlConnect(dsn)
 		res := getTables(db)
-		for _, Tname := range res {
-			fmt.Println(Tname)
+		for _, tableName := range res {
+			showQ :=fmt.Sprintf("show create table %s", tableName)
+			rows, err := db.Query(showQ)
+			ifErrWithLog(err)
+			for rows.Next() {
+				var t, Ct string
+				err := rows.Scan(&t,&Ct)
+				ifErrWithLog(err)
+				fmt.Printf("%s;\n",Ct)
+			}
+			rows.Close()
 		}
 	},
 }
@@ -49,11 +58,9 @@ func getTables(db *sql.DB) map[int]string {
 	for rows.Next() {
 		var t string
 		err := rows.Scan(&t)
-		n := len(t)
 		ifErrWithLog(err)
+		n := len(t)
 		r[n] = t
 	}
-	err = rows.Err()
-	ifErrWithLog(err)
 	return r
 }
