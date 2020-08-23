@@ -7,7 +7,8 @@ import (
 )
 
 var (
-	dbhost, dbname, tbname, dbusername, dbpassword string
+	dbhost, dbname, dbusername, dbpassword string
+	dbport int
 )
 
 const (
@@ -49,23 +50,6 @@ func getTables(db *sql.DB) map[int]string {
 		var t string
 		err := rows.Scan(&t)
 		n := len(t)
-		ifErrWithLog(err)
-		r[n] = t
-	}
-	err = rows.Err()
-	ifErrWithLog(err)
-	return r
-}
-
-func getTables(db *sql.DB)  map[string]string{
-	var r = make(map[string]string)
-	rows, err := db.Query(tables_q)
-	ifErrWithLog(err)
-	defer rows.Close()
-
-	for rows.Next() {
-		var n, t string
-		err := rows.Scan(&t)
 		ifErrWithLog(err)
 		r[n] = t
 	}
