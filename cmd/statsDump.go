@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 )
 
 var (
@@ -35,6 +36,9 @@ var statsDumpCmd = &cobra.Command{
 				err := rows.Scan(&t,&Ct)
 				ifErrWithLog(err)
 				fmt.Printf("%s;\n",Ct)
+				d1 := []byte(Ct)
+				err = ioutil.WriteFile(fmt.Sprintf("%s-%s.sql",dbname,tableName), d1, 0644)
+				ifErrWithLog(err)
 			}
 			rows.Close()
 		}
@@ -50,17 +54,19 @@ func init() {
 	statsDumpCmd.Flags().IntVarP(&dbport, "dbport", "P", 4000, "Database port")
 }
 
+// Get table schema information
 func getTables(db *sql.DB) map[int]string {
 	var r = make(map[int]string)
 	rows, err := db.Query(tablesQ)
 	ifErrWithLog(err)
 	defer rows.Close()
+	n := 0
 	for rows.Next() {
 		var t string
 		err := rows.Scan(&t)
 		ifErrWithLog(err)
-		n := len(t)
 		r[n] = t
+		n++
 	}
 	return r
 }
