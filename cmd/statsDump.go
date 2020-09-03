@@ -27,14 +27,14 @@ var statsDumpCmd = &cobra.Command{
 		db := mysqlConnect(dsn)
 		res := getTables(db)
 		for _, tableName := range res {
-			showQ :=fmt.Sprintf("show create table %s", tableName)
+			showQ := fmt.Sprintf("show create table %s", tableName)
 			rows, err := db.Query(showQ)
 			ifErrWithLog(err)
 			for rows.Next() {
 				var t, Ct string
-				err := rows.Scan(&t,&Ct)
+				err := rows.Scan(&t, &Ct)
 				ifErrWithLog(err)
-				fmt.Printf("%s;\n",Ct)
+				fmt.Printf("%s;\n", Ct)
 			}
 			rows.Close()
 		}
