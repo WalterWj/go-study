@@ -35,14 +35,10 @@ var statsDumpCmd = &cobra.Command{
 				var t, Ct string
 				err := rows.Scan(&t, &Ct)
 				ifErrWithLog(err)
-<<<<<<< HEAD
 				fmt.Printf("%s;\n", Ct)
-=======
-				fmt.Printf("%s;\n",Ct)
 				d1 := []byte(Ct)
-				err = ioutil.WriteFile(fmt.Sprintf("%s-%s.sql",dbname,tableName), d1, 0644)
+				err = ioutil.WriteFile(fmt.Sprintf("%s-%s.sql", dbname, tableName), d1, 0644)
 				ifErrWithLog(err)
->>>>>>> 63e4e6228a0f60254f30995e8aa9ab0e72ff63a4
 			}
 			rows.Close()
 		}
