@@ -24,9 +24,9 @@ import (
 
 	"github.com/WalterWj/go-study/imp"
 
+	_ "github.com/go-sql-driver/mysql" // import mysql
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
