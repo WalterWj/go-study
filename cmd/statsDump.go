@@ -51,7 +51,8 @@ func init() {
 	statsDumpCmd.Flags().StringVarP(&dbname, "dbname", "d", "test", "Database name")
 	statsDumpCmd.Flags().StringVarP(&dbhost, "dbhost", "H", "127.0.0.1", "Database host")
 	statsDumpCmd.Flags().StringVarP(&dbpassword, "dbpassword", "p", "", "Database passowrd")
-	statsDumpCmd.Flags().IntVarP(&dbport, "dbport", "P", 4000, "Database port")
+	statsDumpCmd.Flags().IntVarP(&dbport, "dbport", "P", 4000, "Database Port")
+	statsDumpCmd.Flags().IntVarP(&dbport, "statusport", "s", 10080, "TiDB Status Port")
 }
 
 // Get table schema information
